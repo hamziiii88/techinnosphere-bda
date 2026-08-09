@@ -180,7 +180,7 @@ Hamzah | TechInnoSphere Software`
         background: 'linear-gradient(135deg, rgba(37, 211, 102, 0.22), rgba(15, 23, 42, 0.95))',
         borderColor: 'rgba(37, 211, 102, 0.4)',
         display: 'flex',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: '1rem'
@@ -273,7 +273,7 @@ Hamzah | TechInnoSphere Software`
             <button 
               onClick={() => setShowQRModal(true)}
               className="btn btn-secondary btn-sm" 
-              style={{ width: '100%', marginTop: '0.85rem', justify: 'center' }}
+              style={{ width: '100%', marginTop: '0.85rem', justifyContent: 'center' }}
             >
               <RefreshCw size={13} />
               <span>Pair Different Number</span>
@@ -358,7 +358,7 @@ Hamzah | TechInnoSphere Software`
                 </div>
               </div>
             ) : (
-              <button onClick={startAutoCampaign} className="btn btn-whatsapp btn-sm" style={{ width: '100%', justify: 'center' }}>
+              <button onClick={startAutoCampaign} className="btn btn-whatsapp btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
                 <Play size={14} />
                 <span>Launch Campaign to {leads.length} Leads</span>
               </button>
@@ -411,7 +411,7 @@ Hamzah | TechInnoSphere Software`
           {/* Quick Direct Actions Footer */}
           <div style={{
             display: 'flex',
-            justify: 'space-between',
+            justifyContent: 'space-between',
             alignItems: 'center',
             paddingTop: '0.85rem',
             borderTop: '1px solid rgba(255, 255, 255, 0.08)'
@@ -476,7 +476,7 @@ Hamzah | TechInnoSphere Software`
                 required
               />
 
-              <button type="submit" disabled={isScanning} className="btn btn-whatsapp" style={{ justify: 'center', padding: '0.75rem' }}>
+              <button type="submit" disabled={isScanning} className="btn btn-whatsapp" style={{ justifyContent: 'center', padding: '0.75rem' }}>
                 {isScanning ? (
                   <>
                     <RefreshCw size={16} className="animate-spin" />
@@ -491,7 +491,7 @@ Hamzah | TechInnoSphere Software`
               </button>
             </form>
 
-            <button onClick={() => setShowQRModal(false)} className="btn btn-secondary btn-sm" style={{ justify: 'center' }}>
+            <button onClick={() => setShowQRModal(false)} className="btn btn-secondary btn-sm" style={{ justifyContent: 'center' }}>
               Cancel
             </button>
           </div>

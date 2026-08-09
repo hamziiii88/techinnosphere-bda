@@ -240,7 +240,7 @@ export default function ColdCallHub({ leads = [], selectedLead, onSelectLead, on
       <div className="glass-panel" style={{
         padding: '1.5rem',
         display: 'flex',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: '1.5rem',
@@ -341,7 +341,7 @@ export default function ColdCallHub({ leads = [], selectedLead, onSelectLead, on
           background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(15, 23, 42, 0.9))',
           borderColor: 'rgba(6, 182, 212, 0.35)',
           display: 'flex',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '1rem'

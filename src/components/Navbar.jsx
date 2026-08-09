@@ -223,7 +223,7 @@ export default function Navbar({ activeTab, setActiveTab, onResetData, leadsCoun
                 padding: 0,
                 display: 'flex',
                 alignItems: 'center',
-                justify: 'center',
+                justifyContent: 'center',
                 borderRadius: '8px',
                 flexShrink: 0
               }}

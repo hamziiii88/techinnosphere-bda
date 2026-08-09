@@ -298,7 +298,7 @@ export default function App() {
           maxWidth: '1650px',
           margin: '0 auto',
           display: 'flex',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
           gap: '1rem',

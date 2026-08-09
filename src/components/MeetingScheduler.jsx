@@ -173,7 +173,7 @@ Web: www.techinnosphere.com`;
         background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.22), rgba(15, 23, 42, 0.95))',
         borderColor: 'rgba(168, 85, 247, 0.35)',
         display: 'flex',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: '1.25rem'
@@ -289,7 +289,7 @@ Web: www.techinnosphere.com`;
                   {/* Real Action Buttons for Meeting */}
                   <div style={{
                     display: 'flex',
-                    justify: 'space-between',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
                     paddingTop: '0.75rem',
                     borderTop: '1px solid rgba(255, 255, 255, 0.06)',

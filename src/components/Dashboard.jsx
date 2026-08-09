@@ -43,7 +43,7 @@ export default function Dashboard({ leads, activities, meetings, onNavigate, onA
         background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.45), rgba(14, 165, 233, 0.15), rgba(15, 23, 42, 0.85))',
         borderColor: 'rgba(59, 130, 246, 0.3)',
         display: 'flex',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: '1.25rem'
@@ -290,7 +290,7 @@ export default function Dashboard({ leads, activities, meetings, onNavigate, onA
                   borderRadius: '14px',
                   padding: '0.9rem 1rem',
                   display: 'flex',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   alignItems: 'center'
                 }}
               >

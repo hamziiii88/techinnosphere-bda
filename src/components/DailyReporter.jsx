@@ -120,7 +120,7 @@ export default function DailyReporter({ leads = [], activities = [], meetings = 
         background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.22), rgba(15, 23, 42, 0.95))',
         borderColor: 'rgba(6, 182, 212, 0.35)',
         display: 'flex',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: '1.25rem'
@@ -173,7 +173,7 @@ export default function DailyReporter({ leads = [], activities = [], meetings = 
       <div className="glass-panel" style={{ padding: '1.75rem' }}>
         <div style={{ 
           display: 'flex', 
-          justify: 'space-between', 
+          justifyContent: 'space-between', 
           alignItems: 'center', 
           marginBottom: '1.25rem', 
           borderBottom: '1px solid rgba(255,255,255,0.08)', 
@@ -463,7 +463,7 @@ export default function DailyReporter({ leads = [], activities = [], meetings = 
               borderRadius: '14px 14px 0 0',
               padding: '1rem 1.35rem',
               display: 'flex',
-              justify: 'space-between',
+              justifyContent: 'space-between',
               alignItems: 'center',
               boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
             }}>
