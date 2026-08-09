@@ -1,0 +1,139 @@
+{
+  "name": "TechInnoSphere BDA Outreach & Lead Sheet Automation",
+  "note": "Live in n8n at https://hamzah10.app.n8n.cloud/workflow/PeI96zOY7lBjjUt5 (workflow ID PeI96zOY7lBjjUt5). This file is a local copy for reference/version-control — the n8n instance is the source of truth once edited there.",
+  "leadSheet": {
+    "spreadsheetId": "1KpJmh73mxDQUrevvQVS0vFzvIT9FJWgJrjQKpPuX3Mc",
+    "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1KpJmh73mxDQUrevvQVS0vFzvIT9FJWgJrjQKpPuX3Mc/edit",
+    "sheetName": "Leads",
+    "columns": ["LeadID", "Name", "Role", "Company", "Location", "Category", "Email", "Phone", "LinkedIn", "HasWebsite", "HasApp", "TechInterest", "Status", "LastContactDate", "Notes"],
+    "statusValues": ["New", "Approved", "Sent"],
+    "safetyGate": "Only rows with Status=Approved are read and contacted. After sending, the row is set to Status=Sent so it is never messaged twice. Add new leads with Status=New or blank; set to Approved yourself when ready to send."
+  },
+  "nodes": [
+    {
+      "id": "445a9ec3-960b-449c-95d7-d7bd3d4be99c",
+      "name": "Daily 9:00 AM IST Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [180, 220],
+      "parameters": { "rule": { "interval": [{ "field": "cronExpression", "expression": "0 9 * * 1-5" }] } }
+    },
+    {
+      "id": "10fa5845-a2e7-4e69-88dd-f95dae98ce48",
+      "name": "Incoming Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [180, 420],
+      "parameters": { "httpMethod": "POST", "path": "lead-webhook", "options": {} }
+    },
+    {
+      "id": "cb76d025-5ffa-4822-a8eb-26fef4fb4f24",
+      "name": "Load Approved Leads from Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [440, 320],
+      "parameters": {
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": { "__rl": true, "mode": "id", "value": "1KpJmh73mxDQUrevvQVS0vFzvIT9FJWgJrjQKpPuX3Mc", "cachedResultName": "TechInnoSphere BDA Leads" },
+        "sheetName": { "__rl": true, "mode": "id", "value": "1850333274", "cachedResultName": "Leads" },
+        "filtersUI": { "values": [{ "lookupColumn": "Status", "lookupValue": "Approved" }] },
+        "combineFilters": "AND",
+        "options": { "returnAllMatches": "returnAllMatches" }
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "APIPsbEhkngQLfjH", "name": "Google Sheets account" } }
+    },
+    {
+      "id": "2de668fa-fee2-4f1c-8aab-80943b826701",
+      "name": "Generate Tailored BDA Pitch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 320],
+      "parameters": {
+        "jsCode": "const lead = $input.item.json;\nconst firstName = (lead.Name || 'there').split(' ')[0];\nconst subject = `Quick Idea for ${lead.Company}'s Online Presence`;\nconst htmlBody = `\n<div style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #1e293b; max-width: 600px;\">\n  <p>Dear ${firstName},</p>\n  <p>I came across <strong>${lead.Company}</strong> in ${lead.Location} and noticed you're currently running without your own website or app.</p>\n  <p>I'm Hamzah from <strong>TechInnoSphere Software Solutions (Mumbai)</strong>. We build simple, affordable web platforms and ordering pages for local ${lead.Category} businesses so customers can find and order from you directly — no commission cut to third-party apps.</p>\n  <p>Specifically for you: <strong>${lead.TechInterest}</strong>.</p>\n  <p>Would you be open to a short 10-minute call this week to see a quick demo?</p>\n  <p>Best regards,<br>\n  <strong>Hamzah</strong><br>\n  TechInnoSphere Software Solutions<br>\n  contact@techinnosphere.com | www.techinnosphere.com</p>\n</div>\n`;\nconst plainText = `Hi ${firstName},\\n\\nI came across ${lead.Company} in ${lead.Location} and noticed you don't have your own website or app yet.\\n\\nWe build simple, affordable ordering websites for local businesses like yours — zero commission, direct customer orders.\\n\\nWould you be open to a 10-minute call this week?\\n\\nBest regards,\\nHamzah | TechInnoSphere Software Solutions\\ncontact@techinnosphere.com`;\nreturn { json: { ...lead, emailSubject: subject, emailHtml: htmlBody, emailText: plainText } };"
+      }
+    },
+    {
+      "id": "a11b9121-c046-4a79-968b-086fb6527b43",
+      "name": "Send via Hostinger SMTP",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [960, 220],
+      "parameters": {
+        "fromEmail": "contact@techinnosphere.com",
+        "toEmail": "={{ $json.Email }}",
+        "subject": "={{ $json.emailSubject }}",
+        "emailFormat": "html",
+        "html": "={{ $json.emailHtml }}",
+        "options": {}
+      },
+      "credentials": { "smtp": { "name": "Hostinger SMTP (contact@techinnosphere.com)" } },
+      "note": "Credential not yet connected in n8n — open the node and connect your Hostinger SMTP account before activating."
+    },
+    {
+      "id": "def1430f-9b4e-48f4-aa5e-1b3442953686",
+      "name": "Send WhatsApp Follow-up",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [960, 420],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ultramsg.com/YOUR_INSTANCE_ID/messages/chat",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "keypair",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "to", "value": "={{ $json.Phone }}" },
+            { "name": "body", "value": "=Hi {{ $json.Name.split(\" \")[0] }}! Hamzah here from TechInnoSphere Software Solutions (Mumbai). Sent you an email about a simple website for {{ $json.Company }}. Looking forward to connecting!" }
+          ]
+        },
+        "onError": "continueRegularOutput"
+      },
+      "credentials": { "httpCustomAuth": { "name": "UltraMsg API" } },
+      "note": "Replace YOUR_INSTANCE_ID in the URL and connect your UltraMsg credential before activating."
+    },
+    {
+      "id": "b5b12221-5ebe-4654-a119-d6ce55e44283",
+      "name": "Mark Lead as Sent in Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1220, 320],
+      "parameters": {
+        "resource": "sheet",
+        "operation": "appendOrUpdate",
+        "documentId": { "__rl": true, "mode": "id", "value": "1KpJmh73mxDQUrevvQVS0vFzvIT9FJWgJrjQKpPuX3Mc", "cachedResultName": "TechInnoSphere BDA Leads" },
+        "sheetName": { "__rl": true, "mode": "id", "value": "1850333274", "cachedResultName": "Leads" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "LeadID": "={{ $('Generate Tailored BDA Pitch').item.json.LeadID }}",
+            "Status": "Sent",
+            "LastContactDate": "={{ $now.toISODate() }}"
+          },
+          "schema": [
+            { "id": "LeadID", "displayName": "LeadID", "type": "string", "canBeUsedToMatch": true },
+            { "id": "Status", "displayName": "Status", "type": "string", "canBeUsedToMatch": false },
+            { "id": "LastContactDate", "displayName": "LastContactDate", "type": "string", "canBeUsedToMatch": false }
+          ],
+          "matchingColumns": ["LeadID"]
+        }
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "APIPsbEhkngQLfjH", "name": "Google Sheets account" } }
+    }
+  ],
+  "connections": {
+    "Daily 9:00 AM IST Schedule": { "main": [[{ "node": "Load Approved Leads from Sheet", "type": "main", "index": 0 }]] },
+    "Incoming Lead Webhook": { "main": [[{ "node": "Load Approved Leads from Sheet", "type": "main", "index": 0 }]] },
+    "Load Approved Leads from Sheet": { "main": [[{ "node": "Generate Tailored BDA Pitch", "type": "main", "index": 0 }]] },
+    "Generate Tailored BDA Pitch": { "main": [[{ "node": "Send via Hostinger SMTP", "type": "main", "index": 0 }, { "node": "Send WhatsApp Follow-up", "type": "main", "index": 0 }]] },
+    "Send via Hostinger SMTP": { "main": [[{ "node": "Mark Lead as Sent in Sheet", "type": "main", "index": 0 }]] },
+    "Send WhatsApp Follow-up": { "main": [[{ "node": "Mark Lead as Sent in Sheet", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

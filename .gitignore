@@ -1,0 +1,11 @@
+node_modules
+dist
+dist_*
+dev-dist
+.env
+.env.production.local
+.DS_Store
+*.log
+scratch
+claude_desktop_config.json
+email-tracking.json
