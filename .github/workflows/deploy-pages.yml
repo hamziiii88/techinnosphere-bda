@@ -30,12 +30,10 @@ jobs:
       - name: Build (GitHub Pages base path + live backend URL)
         env:
           GITHUB_PAGES: 'true'
-          # Set once the Render backend is deployed: Settings > Secrets and
-          # variables > Actions > New repository variable > VITE_EMAIL_API_BASE
-          # = https://techinnosphere-email-server.onrender.com
-          # Until then the build falls back to same-host detection, which
-          # won't reach a cross-origin backend — email sending needs this set.
-          VITE_EMAIL_API_BASE: ${{ vars.VITE_EMAIL_API_BASE }}
+          # Backend deployed on Render (render.yaml). This is a public URL,
+          # not a secret — safe to commit directly. If the backend is ever
+          # redeployed under a different URL, update this line and push.
+          VITE_EMAIL_API_BASE: https://techinnosphere-email-server.onrender.com
         run: npm run build
 
       # public/CNAME is for the surge.sh deploy path, not this one — a stale

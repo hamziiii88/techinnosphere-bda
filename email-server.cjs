@@ -90,7 +90,8 @@ const ALLOWED_ORIGIN_PATTERNS = [
   /^https?:\/\/172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}(:\d+)?$/,
   /^https?:\/\/techinnosphere-automation(:\d+)?$/,
   /^https?:\/\/[a-z0-9-]+\.local(:\d+)?$/i,
-  /^https:\/\/techinnosphere-mumbai\.surge\.sh$/
+  /^https:\/\/techinnosphere-mumbai\.surge\.sh$/,
+  /^https:\/\/hamziiii88\.github\.io$/
 ];
 
 app.use(cors({
